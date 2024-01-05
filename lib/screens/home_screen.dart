@@ -80,11 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Get.to(const CreateQuiz());
                       },
-                      child: const Text(
+                      child: Text(
                         "Create\nQuiz",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: Get.textScaleFactor * 20,
                           color: Colors.white,
                         ),
                         textAlign: TextAlign.center,
@@ -109,11 +109,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         Get.to(const JoinQuiz());
                       },
-                      child: const Text(
+                      child: Text(
                         "Join\nQuiz",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: Get.textScaleFactor * 20,
                           color: Colors.white,
                         ),
                         textAlign: TextAlign.center,
@@ -135,54 +135,59 @@ class _HomeScreenState extends State<HomeScreen> {
               //     Colors.deepPurpleAccent.shade100,
               //   ], begin: Alignment.topRight, end: Alignment.bottomLeft),
               // ),
-              child: GridView.builder(
-                itemCount: images.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 4.0,
-                ),
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Get.to(const QuestionPage(), arguments: [
-                        questions[index],
-                        titles[index],
-                        "20",
-                        false,
-                        true,
-                      ]);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      // padding: const EdgeInsets.all(20),
-                      height: Get.size.height * 0.2,
-                      width: Get.size.width * 0.2,
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Image(
-                              image: AssetImage(images[index]),
-                              height: Get.size.height * 0.12,
-                              width: Get.size.height * 0.12,
-                              fit: BoxFit.fill,
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                child: GridView.builder(
+                  itemCount: images.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 4.0,
+                    mainAxisSpacing: 4.0,
+                  ),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        Get.to(const QuestionPage(), arguments: [
+                          questions[index],
+                          titles[index],
+                          "20",
+                          false,
+                          true,
+                        ]);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        // padding: const EdgeInsets.all(20),
+                        height: Get.size.height * 0.2,
+                        width: Get.size.width * 0.2,
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Image(
+                                image: AssetImage(images[index]),
+                                height: Get.size.height * 0.12,
+                                width: Get.size.height * 0.12,
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Text(
-                              titles[index],
-                              style: const TextStyle(
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Text(
+                                titles[index],
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.deepPurpleAccent),
-                            ),
-                          )
-                        ],
+                                  fontSize: Get.textScaleFactor * 18,
+                                  color: Colors.deepPurpleAccent,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ],
