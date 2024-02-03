@@ -10,7 +10,7 @@ class LeaderBoard extends StatefulWidget {
 
 class _LeaderBoardState extends State<LeaderBoard> {
   DatabaseService databaseService = DatabaseService();
-  dynamic list = [];
+  dynamic leaderboardResult = [];
 
   @override
   void initState() {
@@ -20,35 +20,36 @@ class _LeaderBoardState extends State<LeaderBoard> {
   }
 
   getData() async {
-    list = await databaseService.leaderboard();
+    leaderboardResult = await databaseService.leaderboard();
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        return Card(
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.deepPurpleAccent,
-              child: Text(
-                "${index + 1}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+      body: ListView.builder(
+        itemCount: leaderboardResult.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.deepPurpleAccent,
+                child: Text(
+                  "${index + 1}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
+              title: Text(
+                leaderboardResult[index].key.toString(),
+              ),
+              trailing: Text("Score: ${leaderboardResult[index].value.toStringAsFixed(0)}"),
             ),
-            title: Text(
-              list[index].key.toString(),
-            ),
-            trailing: Text("Score: ${list[index].value.toStringAsFixed(0)}"),
-          ),
-        );
-      },
-    ));
+          );
+        },
+      ),
+    );
   }
 }

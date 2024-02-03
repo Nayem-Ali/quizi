@@ -13,7 +13,7 @@ class _CreateQuizState extends State<CreateQuiz> {
   TextEditingController title = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController duration = TextEditingController();
-  bool studentID = false;
+
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -48,7 +48,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                   controller: password,
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return "Must fill with title";
+                      return "Must fill with password";
                     } else if (value.length < 6) {
                       return "Password length must be 6 or more";
                     }
@@ -75,22 +75,7 @@ class _CreateQuizState extends State<CreateQuiz> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: studentID,
-                        onChanged: (value) {
-                          setState(() {
-                            studentID = value!;
-                          });
-                        },
-                      ),
-                      const Text("Make student ID mandatory"),
-                    ],
-                  ),
-                ),
+
                 ElevatedButton.icon(
                   onPressed: () {
                    if(formKey.currentState!.validate()){
@@ -98,12 +83,13 @@ class _CreateQuizState extends State<CreateQuiz> {
                        title.text.trim(),
                        password.text.trim(),
                        duration.text.trim(),
-                       studentID,
+                       true, // studentID
                      ]);
                    }
                   },
                   label: const Text("Next"),
                   icon: const Icon(Icons.arrow_forward),
+                  // style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrange),
                 )
               ],
             ),

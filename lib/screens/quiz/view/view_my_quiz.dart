@@ -65,27 +65,7 @@ class _ViewMyQuizState extends State<ViewMyQuiz> {
               ),
             ),
             // SizedBox(height: Get.size.height*0.01),
-            Row(
-              children: [
-                const Text(
-                  'Required Student ID',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Switch(
-                  activeColor: Colors.green,
-                  value: data['requiredID'],
-                  onChanged: (value) async {
-                    setState(() {
-                      data['requiredID'] = value;
-                    });
-                    await databaseService.updateQuizDetails(data['title'], "requiredID", value);
-                  },
-                ),
-              ],
-            ),
+
             Row(
               children: [
                 const Text(
@@ -163,14 +143,7 @@ class _ViewMyQuizState extends State<ViewMyQuiz> {
                           ),
                         ),
                       const Divider(),
-                      // Expanded(
-                      //   child: ListView.builder(
-                      //     itemCount: questions[index]['options'].length,
-                      //     itemBuilder: (context, i) {
-                      //       return Text(questions[index]['options'][i]);
-                      //     },
-                      //   ),
-                      // )
+
                     ],
                   );
                 },

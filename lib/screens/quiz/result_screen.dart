@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:quizzy/services/db_service.dart';
 
 class ResultScreen extends StatefulWidget {
@@ -31,14 +30,11 @@ class _ResultScreenState extends State<ResultScreen> {
     }
   }
 
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getResult();
-
   }
 
   @override
@@ -59,9 +55,10 @@ class _ResultScreenState extends State<ResultScreen> {
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(),
                 gradient: LinearGradient(
-                    colors: [Colors.deepPurpleAccent, Colors.purple.shade100],
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight),
+                  colors: [Colors.deepPurpleAccent, Colors.purple.shade100],
+                  begin: Alignment.bottomLeft,
+                  end: Alignment.topRight,
+                ),
               ),
               child: Center(
                 child: Text(

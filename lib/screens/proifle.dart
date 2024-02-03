@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   DatabaseService databaseService = DatabaseService();
 
   String userName = "";
-  List<dynamic> myHistory = [];
+  List<dynamic> myParticipation = [];
   List<dynamic> myQuiz = [];
 
   @override
@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   getData() async {
     userName = await databaseService.getUserData();
-    myHistory = await databaseService.getMyHistory();
+    myParticipation = await databaseService.getMyParticipation();
     myQuiz = await databaseService.getMyQuiz();
     setState(() {});
   }
@@ -42,28 +42,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Question question = Question();
     late List<dynamic> questions;
     List<dynamic> shuffledOptions = [];
-    for (int i = 0; i < myHistory[index]["shuffledOptions"].length; i++) {
+    for (int i = 0; i < myParticipation[index]["shuffledOptions"].length; i++) {
       // print(myHistory[index]["shuffledOptions"]["$i"]);
-      shuffledOptions.add(myHistory[index]["shuffledOptions"]["$i"]);
+      shuffledOptions.add(myParticipation[index]["shuffledOptions"]["$i"]);
     }
-    if (myHistory[index]["title"] == "Flutter") {
+    if (myParticipation[index]["title"] == "Flutter") {
       questions = List.from(question.flutterQuestion);
-    } else if (myHistory[index]["title"] == "C Programming") {
+    } else if (myParticipation[index]["title"] == "C Programming") {
       questions = List.from(question.cQuestion);
-    } else if (myHistory[index]["title"] == "Data Structure") {
+    } else if (myParticipation[index]["title"] == "Data Structure") {
       questions = List.from(question.dataStructureQuestion);
-    } else if (myHistory[index]["title"] == "Python") {
+    } else if (myParticipation[index]["title"] == "Python") {
       questions = List.from(question.pythonQuestion);
-    } else if (myHistory[index]["title"] == "DBMS") {
+    } else if (myParticipation[index]["title"] == "DBMS") {
       questions = List.from(question.dbmsQuestion);
-    } else if (myHistory[index]["title"] == "OOP") {
+    } else if (myParticipation[index]["title"] == "OOP") {
       questions = List.from(question.oopQuestion);
-    } else if (myHistory[index]["title"] == "Computer Network") {
+    } else if (myParticipation[index]["title"] == "Computer Network") {
       questions = question.cnQuestion;
     }
 
     Get.to(const ResultScreen(),
-        arguments: [questions, shuffledOptions, myHistory[index]["answers"]]);
+        arguments: [questions, shuffledOptions, myParticipation[index]["answers"]]);
   }
 
   @override
@@ -77,37 +77,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: CircleAvatar(
                     backgroundColor: Colors.deepPurpleAccent,
                     radius: 50,
-                    child: Stack(
-                      alignment: Alignment.bottomLeft,
-                      children: [
-                        Center(
-                          child: Text(
-                            userName[0],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: Get.size.height * 0.1,
-                                color: Colors.white),
-                          ),
+                    child: Center(
+                      child: Text(
+                        userName[0],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: Get.size.height * 0.1,
+                          color: Colors.white,
                         ),
-                        Positioned(
-                          bottom: -10,
-                          right: -10,
-                          child: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.camera_alt,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )
-                      ],
+                      ),
                     ),
                   ),
                 ),
                 Text(
                   userName,
                   style: const TextStyle(
-                      fontSize: 25, fontWeight: FontWeight.bold, color: Colors.deepPurpleAccent),
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurpleAccent,
+                  ),
                 ),
                 const Divider(thickness: 2, color: Colors.deepPurpleAccent),
                 SizedBox(
@@ -117,15 +105,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Text(
                       "My Participation",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18, color: Colors.deepPurple),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.deepPurple,
+                      ),
                     ),
                   ),
                 ),
                 const Divider(thickness: 2, color: Colors.deepPurpleAccent),
                 Expanded(
-                  child: myHistory.isNotEmpty
+                  child: myParticipation.isNotEmpty
                       ? ListView.builder(
-                          itemCount: myHistory.length,
+                          itemCount: myParticipation.length,
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
@@ -136,8 +127,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ? Colors.limeAccent.shade100
                                     : Colors.tealAccent.shade100,
                                 child: ListTile(
-                                  title: Text(myHistory[index]["title"]),
-                                  trailing: Text("Score: ${myHistory[index]["score"]}"),
+                                  title: Text(myParticipation[index]["title"]),
+                                  trailing: Text("Score: ${myParticipation[index]["score"]}"),
                                 ),
                               ),
                             );

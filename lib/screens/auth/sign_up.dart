@@ -22,6 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
   final fullNameRegex = RegExp(r'^[a-zA-Z]+(?: [a-zA-Z]+)*$');
+  final passwordRegex = RegExp(r'^(?=.*[A-Z])(?=.*[!@#$%&*+_])(.{6,})$');
 
   final formKey = GlobalKey<FormState>();
   bool isVisible = true;
@@ -33,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         body: SingleChildScrollView(
           child: Center(
             child: Container(
-              height: Get.size.height,
+              height: Get.height,
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               child: Form(
                 key: formKey,
@@ -62,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         border: OutlineInputBorder(),
                       ),
                     ),
-                    SizedBox(height: Get.size.height * 0.01),
+                    SizedBox(height: Get.height * 0.01),
                     TextFormField(
                       controller: emailController,
                       validator: (value) {
@@ -88,8 +89,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Please enter your password";
-                        } else if (value.length < 6) {
-                          return "Password must be 6 characters long";
+                        } else if (passwordRegex.hasMatch(value) == false) {
+                          return "Enter at least 1 uppercase letter & 1 special character with "
+                              "length 6";
                         }
                         return null;
                       },
@@ -136,32 +138,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     SizedBox(height: Get.size.height * 0.04),
                     ElevatedButton.icon(
-                        onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            await authServices.registerUser(
-                              emailController.text.trim(),
-                              passwordController.text.trim(),
-                              nameController.text.trim(),
-                              context,
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                            minimumSize: Size(Get.size.width * 0.7, Get.size.height * 0.08)),
-                        label: const Text(
-                          "Sign Up",
-                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      onPressed: () async {
+                        if (formKey.currentState!.validate()) {
+                          await authServices.registerUser(
+                            emailController.text.trim(),
+                            passwordController.text.trim(),
+                            nameController.text.trim(),
+                            context,
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(
+                          Get.size.width * 0.7,
+                          Get.size.height * 0.08,
                         ),
-                        icon: const Icon(
-                          Icons.create,
-                        )),
+                      ),
+                      label: const Text(
+                        "Sign Up",
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      icon: const Icon(
+                        Icons.create,
+                      ),
+                    ),
                     SizedBox(height: Get.size.height * 0.01),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
                           "Already have an account?",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                         ),
                         SizedBox(width: Get.size.height * 0.01),
                         TextButton(

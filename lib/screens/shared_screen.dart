@@ -12,7 +12,7 @@ class SharedScreen extends StatefulWidget {
 }
 
 class _SharedScreenState extends State<SharedScreen> {
-  List<Widget> screens = const [HomeScreen(), LeaderBoard(), ProfileScreen()];
+  List screens = const [HomeScreen(), LeaderBoard(), ProfileScreen()];
   AuthServices authServices = AuthServices();
   int index = 0;
 
@@ -29,7 +29,7 @@ class _SharedScreenState extends State<SharedScreen> {
           actions: [
             IconButton(
               onPressed: () async {
-                authServices.logOutUser();
+                await authServices.logOutUser();
               },
               icon: const Icon(Icons.logout),
             )

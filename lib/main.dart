@@ -9,16 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   /// To interact with flutter engine
-  await Firebase.initializeApp(
-    // name: "Flutter Notifications",
-    // options: const FirebaseOptions(
-    //   apiKey: "AIzaSyBqjZJCKd-aGGb2TUwRFbUYAnqSbcW4KgY",
-    //   appId: "1:1081574560491:android:8985e69ca15ce8155aa4ae",
-    //   messagingSenderId: "1081574560491",
-    //   projectId: "flutter-notifications-b949e",
-    //   storageBucket: "flutter-notifications-b949e.appspot.com",
-    // ),
-  );
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -34,13 +25,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: const SplashScreen(),
-      theme: ThemeData.light().copyWith(
+      theme: ThemeData.light(useMaterial3: false).copyWith(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurpleAccent),
-        primaryColor: Colors.deepPurpleAccent,
-        //fontFamily: "Poppins",
+
         textTheme: GoogleFonts.aBeeZeeTextTheme(),
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        // useMaterial3: true,
+
       ),
       debugShowCheckedModeBanner: false,
     );

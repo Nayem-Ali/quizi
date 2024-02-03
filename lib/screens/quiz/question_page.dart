@@ -58,42 +58,24 @@ class _QuestionPageState extends State<QuestionPage> {
       temp.shuffle();
       shuffledOptions.add(temp);
     }
+    print(myAnswer);
   }
 
   addResult() async {
-    int score = 0;
-    for (int i = 0; i < myAnswer.length; i++) {
-      if (myAnswer[i] != -1) {
-        if (questions[i]["options"][0] == shuffledOptions[i][myAnswer[i]]) score++;
+    try {
+      int score = 0;
+      for (int i = 0; i < myAnswer.length; i++) {
+        if (myAnswer[i] != -1) {
+          if (questions[i]["options"][0] == shuffledOptions[i][myAnswer[i]]) score++;
+        }
       }
-    }
-    if (fromDB == false) {
-      await databaseService.addQuizResult(title, myAnswer, shuffledOptions, score);
-    } else if (response && duration != 0) {
-      await databaseService.addResponse(Get.arguments[5], title, score, Get.arguments[6]);
-      Get.defaultDialog(
-          title: "Response is submitted",
-          // middleText: "The owner stopped accepting response or time out",
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text("OK"),
-            ),
-          ]);
-    } else {
-      Get.defaultDialog(
-          title: "Response not Submitted",
-          middleText: "The owner stopped accepting response or time out",
-          actions: [
-            TextButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text("OK"),
-            ),
-          ]);
+      if (fromDB == false) {
+        await databaseService.addQuizResult(title, myAnswer, shuffledOptions, score);
+      } else if (response == true && duration != 0) {
+        await databaseService.addResponse(Get.arguments[5], title, score, Get.arguments[6]);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -103,7 +85,6 @@ class _QuestionPageState extends State<QuestionPage> {
         setState(() {
           duration--;
         });
-
         quizTimer();
       }
     });
@@ -120,6 +101,12 @@ class _QuestionPageState extends State<QuestionPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           actions: [
             Row(
               children: [
@@ -130,13 +117,6 @@ class _QuestionPageState extends State<QuestionPage> {
               ],
             ),
           ],
-          title: Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          // centerTitle: true,
         ),
         body: Container(
           margin: const EdgeInsets.all(15),
@@ -162,6 +142,7 @@ class _QuestionPageState extends State<QuestionPage> {
                             setState(() {
                               myAnswer[index] = i;
                             });
+                            print(myAnswer);
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(Get.size.width, Get.size.height * 0.08),
@@ -193,7 +174,8 @@ class _QuestionPageState extends State<QuestionPage> {
                     ElevatedButton.icon(
                       onPressed: previousQuestion,
                       style: ElevatedButton.styleFrom(
-                          minimumSize: Size(Get.size.width * 0.4, Get.size.height * 0.05)),
+                        minimumSize: Size(Get.size.width * 0.4, Get.size.height * 0.05),
+                      ),
                       label: const Text("Previous"),
                       icon: const Icon(Icons.arrow_back),
                     ),
@@ -209,12 +191,37 @@ class _QuestionPageState extends State<QuestionPage> {
                   if (index == questions.length - 1)
                     ElevatedButton(
                       onPressed: () async {
+                        print("A");
                         await addResult();
                         if (fromDB == false) {
                           Get.off(const ResultScreen(),
                               arguments: [questions, shuffledOptions, myAnswer]);
                         } else {
-                          Get.off(const SharedScreen());
+                          if (response && duration > 0) {
+                            Get.defaultDialog(
+                                title: "Response is submitted",
+                                // middleText: "The owner stopped accepting response or time out",
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.offAll(const SharedScreen());
+                                    },
+                                    child: const Text("OK"),
+                                  ),
+                                ]);
+                          } else {
+                            Get.defaultDialog(
+                                title: "Response not Submitted",
+                                middleText: "The owner stopped accepting response or time out",
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.offAll(const SharedScreen());
+                                    },
+                                    child: const Text("OK"),
+                                  ),
+                                ]);
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(

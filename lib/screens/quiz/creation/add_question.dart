@@ -35,7 +35,7 @@ class _AddQuestionState extends State<AddQuestion> {
           option1[index].text,
           option2[index].text,
           if (option3[index].text.isNotEmpty) option3[index].text,
-          if (option3[index].text.isNotEmpty) option4[index].text,
+          if (option4[index].text.isNotEmpty) option4[index].text,
         ]
       };
       if (questions.isNotEmpty) {
@@ -45,7 +45,6 @@ class _AddQuestionState extends State<AddQuestion> {
       } else {
         questions.add(Q);
       }
-      print(questions);
 
       setState(() {
         question.add(TextEditingController());
@@ -56,17 +55,11 @@ class _AddQuestionState extends State<AddQuestion> {
         index += 1;
       });
     }
-    // else{
-    //   Get.defaultDialog(
-    //     title: "OOPS",
-    //     middleText: "Question, Option 1 and 2 is mandatory to add"
-    //   );
-    // }
+
   }
 
   removeQuestion() {
-    print(index);
-    print(question.length);
+
     if (index > 0 && question.isNotEmpty) {
       question[index].clear();
       question[index].dispose();
@@ -83,6 +76,10 @@ class _AddQuestionState extends State<AddQuestion> {
       option3[index].clear();
       option3[index].dispose();
       option3.removeAt(index);
+
+      option4[index].clear();
+      option4[index].dispose();
+      option4.removeAt(index);
     }
     if (questions.length - 1 == index) {
       questions.removeAt(index);

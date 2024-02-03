@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:quizzy/services/db_service.dart';
 
 import '../screens/auth/login_screen.dart';
 import '../utility/logo.dart';
@@ -10,22 +11,8 @@ import '../utility/logo.dart';
 class AuthServices {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
+  DatabaseService databaseService = DatabaseService();
 
-  addUserInfo(String uid, String name) async {
-    await fireStore.collection("user").doc(uid).set({
-      "uid": uid,
-      "name": name,
-    });
-    await fireStore.collection("leaderboard").doc(uid).set({
-      "Flutter": 0,
-      "C Programming": 0,
-      "Data Structure": 0,
-      "Python": 0,
-      "DBMS": 0,
-      "OOP": 0,
-      "Computer Network": 0,
-    });
-  }
 
   registerUser(String email, String password, String name, BuildContext context) async {
     try {
@@ -39,7 +26,8 @@ class AuthServices {
               return AlertDialog(
                 title: const Text("Email verification message is sent"),
                 content: Text(
-                    "To login with your account please verify your email ${userInfo.user!.email} first."),
+                    "To login with your account please verify your email ${userInfo.user!
+                        .email} first."),
                 actions: [
                   TextButton(
                       onPressed: () {
@@ -51,7 +39,7 @@ class AuthServices {
             },
           );
         });
-        await addUserInfo(userInfo.user!.uid, name);
+        await databaseService.addUserInfo(userInfo.user!.uid, name);
       });
     } on FirebaseException catch (e) {
       Get.defaultDialog(
@@ -75,12 +63,7 @@ class AuthServices {
   Future<String> loginUser(String email, String password) async {
     String message = "";
     try {
-      await auth
-          .signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      )
-          .then((value) async {
+      await auth.signInWithEmailAndPassword(email: email, password: password).then((value) async {
         if (value.user!.emailVerified) {
           message = "true";
           return message;
@@ -98,20 +81,26 @@ class AuthServices {
   }
 
   logOutUser() {
-    Get.defaultDialog(title: "Alert", middleText: "Are you sure to logout?", actions: [
-      TextButton(
+    Get.defaultDialog(
+      title: "Alert",
+      middleText: "Are you sure to logout?",
+      actions: [
+        TextButton(
           onPressed: () async {
             await auth.signOut().whenComplete(() {
               Get.offAll(const LoginScreen());
             });
           },
-          child: const Text("Yes")),
-      TextButton(
+          child: const Text("Yes"),
+        ),
+        TextButton(
           onPressed: () {
             Get.back();
           },
-          child: const Text("No")),
-    ]);
+          child: const Text("No"),
+        ),
+      ],
+    );
   }
 
   forgetPassword() {
@@ -123,6 +112,7 @@ class AuthServices {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Logo(
                 width: 80,
@@ -132,7 +122,7 @@ class AuthServices {
               SizedBox(height: Get.size.height * 0.02),
               const Text(
                 "Enter email and tap sent button then check your email. A password reset link will "
-                "be sent.",
+                    "be sent.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 20,
@@ -157,7 +147,11 @@ class AuthServices {
                   await auth.sendPasswordResetEmail(email: emailController.text.trim());
                 },
                 style: ElevatedButton.styleFrom(
-                    minimumSize: Size(Get.size.width * 0.8, Get.size.height * 0.08)),
+                  minimumSize: Size(
+                    Get.size.width * 0.8,
+                    Get.size.height * 0.08,
+                  ),
+                ),
                 label: const Text(
                   "Sent",
                   style: TextStyle(
@@ -167,7 +161,7 @@ class AuthServices {
                 ),
                 icon: const Icon(Icons.send),
               ),
-              const Spacer(),
+              // const Spacer(),
             ],
           ),
         ),

@@ -13,7 +13,6 @@ class Logo extends StatelessWidget {
     return Column(
       children: [
         Container(
-
           // width: width,
           // height: height,
           padding: const EdgeInsets.all(10),
@@ -24,7 +23,7 @@ class Logo extends StatelessWidget {
             borderRadius: BorderRadius.circular(25)
           ),
           child: Image(
-            image: AssetImage("images/quizi.png"),
+            image: const AssetImage("images/quizi.png"),
             width: width,
             height: height,
           ),

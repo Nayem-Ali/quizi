@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return AnimatedSplashScreen(
       splash: const Logo(fontSize: 32, width: 300, height: 300),
       splashIconSize: 400,
-      duration: 2000,
+      duration: 10000,
       nextScreen: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {

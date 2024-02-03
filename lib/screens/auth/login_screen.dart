@@ -20,7 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  final formKey = GlobalKey<FormState>();
   bool isVisible = true;
 
   loginFunction() async {
@@ -163,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
-                          ))
+                          ),)
                     ],
                   ),
                   const Spacer(),
