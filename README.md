@@ -18,6 +18,7 @@ As a quiz creator, you have the ability to set up quizzes and manage quiz-relate
 - **Create Dynamic Quizzes:** Design quizzes where questions can be added or modified by participants.
 - **Manage Quizzes:** Edit existing quizzes, view participant responses, and monitor quiz progress.
 - **Generate Quiz IDs:** Create unique quiz IDs and passwords for dynamic quizzes.
+- **Quiz Result**: View quiz participant score and share this in pdf format.
 
 ### Quiz Participants
 
